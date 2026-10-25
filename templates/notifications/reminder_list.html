@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Reminders{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Reminders</h1>
+    <a href="{% url 'reminder_add' %}" class="button">+ Add reminder</a>
+</div>
+<p class="muted">
+    A reminder is saved here first. When its date arrives, ExpiryBox creates a
+    notification for you the next time you open the dashboard or the
+    notifications page, and the reminder is marked as <em>Sent</em>.
+</p>
+
+{% if reminders %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>Item</th><th>Date</th><th>Type</th><th>Status</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for reminder in reminders %}
+                    <tr>
+                        <td><a href="{% url 'item_detail' reminder.item.pk %}">{{ reminder.item.item_name }}</a></td>
+                        <td>{{ reminder.reminder_date|date:"d M Y" }}</td>
+                        <td>{{ reminder.get_reminder_type_display }}</td>
+                        <td>
+                            {% if reminder.is_sent %}
+                                <span class="label label-ok">Sent</span>
+                            {% else %}
+                                <span class="label">Waiting</span>
+                            {% endif %}
+                        </td>
+                        <td class="row-actions">
+                            <a href="{% url 'reminder_edit' reminder.pk %}">Edit</a>
+                            <a href="{% url 'reminder_delete' reminder.pk %}" class="danger-link">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="card"><p>You have no reminders yet.</p></div>
+{% endif %}
+{% endblock %}
