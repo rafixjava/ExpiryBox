@@ -1,0 +1,10 @@
+{# Small coloured label for an item's expiry status. Use: {% include "items/status_label.html" %} #}
+{% with status=item.expiry_status %}
+    {% if status == "expired" %}
+        <span class="label label-expired">Expired</span>
+    {% elif status == "soon" %}
+        <span class="label label-soon">Expiring soon</span>
+    {% else %}
+        <span class="label label-ok">OK</span>
+    {% endif %}
+{% endwith %}
