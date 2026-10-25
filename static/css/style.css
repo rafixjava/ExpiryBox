@@ -1,0 +1,645 @@
+/* ExpiryBox: one simple stylesheet for the whole site. */
+
+/* ---------- Colours and basics ---------- */
+/* The brand colours come from the hourglass logo (static/img/logo.svg). */
+:root {
+    --primary: #6419b5;       /* logo outline (purple) */
+    --primary-dark: #4e1290;
+    --primary-light: #f3ebfc;
+    --accent: #e03cf0;        /* logo sand (magenta) */
+
+    --background: #f6f5f9;
+    --surface: #ffffff;
+    --border: #e4e1ea;
+    --text: #1f1a2e;
+    --muted: #6b6578;
+
+    /* Status colours (kept green / amber / red so their meaning is clear) */
+    --success: #15803d;
+    --warning: #d97706;
+    --danger: #dc2626;
+
+    --radius: 8px;
+    --sidebar-width: 230px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--text);
+    background: var(--background);
+}
+
+a {
+    color: var(--primary);
+}
+
+h1 {
+    font-size: 1.6rem;
+    margin: 0 0 16px;
+}
+
+h2 {
+    font-size: 1.15rem;
+    margin: 0 0 12px;
+}
+
+.muted {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+/* ---------- Page layout: sidebar on the left, content on the right ---------- */
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 20px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    /* The sidebar stays in place while the page scrolls */
+    position: sticky;
+    top: 0;
+    height: 100vh;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 8px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary);
+    text-decoration: none;
+}
+
+.brand-logo {
+    height: 38px;
+    width: auto;
+}
+
+.side-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.side-nav a {
+    display: block;
+    padding: 9px 12px;
+    border-radius: var(--radius);
+    color: var(--text);
+    text-decoration: none;
+}
+
+.side-nav a:hover {
+    background: var(--background);
+    color: var(--primary);
+}
+
+/* The link of the page you are on */
+.side-nav a.active {
+    background: var(--primary-light);
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.sidebar-user {
+    margin-top: auto;   /* pushes this box to the bottom of the sidebar */
+    padding: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebar-user form {
+    margin: 0;
+}
+
+.content {
+    flex: 1;
+    min-width: 0;   /* lets wide tables scroll instead of stretching the page */
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    width: 100%;
+    max-width: 1000px;
+    padding: 28px 32px 40px;
+}
+
+.footer {
+    border-top: 1px solid var(--border);
+    padding: 16px 32px;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.inline-form {
+    display: inline;
+    margin: 0;
+}
+
+/* ---------- Headers, cards, grids ---------- */
+.page-header,
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.page-header h1,
+.section-header h2 {
+    margin: 0;
+}
+
+.actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.narrow {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.danger-zone {
+    border-color: #f5b5b5;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.grid-2 > .card {
+    margin-bottom: 0;
+}
+
+/* ---------- Messages ---------- */
+.message {
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    background: #ecfdf3;
+    border: 1px solid #a7e3bd;
+}
+
+.message-error {
+    background: #fef2f2;
+    border-color: #f5b5b5;
+}
+
+/* ---------- Buttons ---------- */
+.button {
+    display: inline-block;
+    padding: 9px 16px;
+    border: 1px solid var(--primary);
+    border-radius: var(--radius);
+    background: var(--primary);
+    color: #ffffff;
+    font: inherit;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.button:hover {
+    background: var(--primary-dark);
+}
+
+.button-light {
+    background: var(--surface);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+.button-light:hover {
+    background: var(--background);
+}
+
+.button-danger {
+    background: var(--danger);
+    border-color: var(--danger);
+}
+
+.button-danger:hover {
+    background: #b91c1c;
+}
+
+.button-small {
+    padding: 5px 10px;
+    font-size: 0.85rem;
+}
+
+.danger-link {
+    color: var(--danger);
+}
+
+/* ---------- Forms ---------- */
+/* {{ form.as_div }} puts each field (label + input) in its own <div>. */
+.form > div {
+    margin-bottom: 14px;
+}
+
+.form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+/* The "Clear" checkbox label next to the current photo */
+.form input[type="checkbox"] + label {
+    display: inline;
+    font-weight: normal;
+}
+
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="password"],
+.form input[type="number"],
+.form input[type="date"],
+.form input[type="file"],
+.form select,
+.form textarea {
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font: inherit;
+    background: #ffffff;
+}
+
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+    outline: 2px solid #d9c2f5;
+    border-color: var(--primary);
+}
+
+/* Help text under a field */
+.form .helptext,
+.form div > div[id$="_helptext"] {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.form .helptext ul {
+    margin: 4px 0;
+    padding-left: 20px;
+}
+
+/* Validation errors */
+.errorlist {
+    list-style: none;
+    margin: 0 0 6px;
+    padding: 8px 12px;
+    background: #fef2f2;
+    border: 1px solid #f5b5b5;
+    border-radius: var(--radius);
+    color: var(--danger);
+    font-size: 0.9rem;
+}
+
+/* ---------- Status labels ---------- */
+.label {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: #efedf3;
+    color: var(--muted);
+    vertical-align: middle;
+}
+
+.label-ok,
+.label-saved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.label-soon {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.label-expired,
+.label-lost {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.text-saved {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.text-lost {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+/* ---------- Dashboard statistics ---------- */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--primary);
+    border-radius: var(--radius);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.stat-number {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.stat-expired { border-top-color: var(--danger); }
+.stat-soon    { border-top-color: var(--warning); }
+.stat-saved   { border-top-color: var(--success); }
+.stat-lost    { border-top-color: #9ca3af; }
+
+/* ---------- Lists and tables ---------- */
+.simple-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.simple-list li {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.simple-list li:last-child {
+    border-bottom: none;
+}
+
+.unread {
+    font-weight: 600;
+}
+
+/* Wide tables scroll sideways on small screens instead of breaking the page. */
+.table-wrap {
+    overflow-x: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    text-align: left;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.table th {
+    background: #faf9fc;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+.row-actions {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.row-actions a {
+    margin-left: 10px;
+}
+
+/* ---------- Item cards ---------- */
+.item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: 16px;
+}
+
+.item-card {
+    display: block;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    color: var(--text);
+    text-decoration: none;
+}
+
+.item-card:hover {
+    border-color: var(--primary);
+}
+
+.item-photo {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+    background: #efedf3;
+}
+
+.item-photo-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.item-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px;
+}
+
+.item-card-body .label {
+    align-self: flex-start;
+    margin-top: 6px;
+}
+
+/* ---------- Item detail ---------- */
+.detail {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+}
+
+.detail-photo {
+    width: 260px;
+    max-width: 100%;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.detail-table {
+    flex: 1;
+    border-collapse: collapse;
+}
+
+.detail-table th,
+.detail-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 7px 10px 7px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-table th {
+    width: 170px;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+/* ---------- Notifications ---------- */
+.notification-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.notification {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 12px;
+    font-weight: normal;
+}
+
+.notification p {
+    margin: 6px 0 4px;
+}
+
+.notification.unread {
+    border-left: 4px solid var(--accent);
+}
+
+.notification.unread p {
+    font-weight: 600;
+}
+
+/* ---------- Small screens (tablets and phones) ---------- */
+@media (max-width: 860px) {
+    .stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 760px) {
+    /* The sidebar becomes a bar at the top of the page */
+    .layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 16px;
+        gap: 10px;
+    }
+
+    .side-nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .side-nav a {
+        padding: 6px 10px;
+    }
+
+    .sidebar-user {
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 8px 0 0;
+    }
+
+    main {
+        padding: 20px 16px 32px;
+    }
+
+    .footer {
+        padding: 16px;
+    }
+
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .detail {
+        flex-direction: column;
+    }
+
+    .detail-table th {
+        width: 120px;
+    }
+
+    .notification {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.idea/
+db.sqlite3
+media/
+# Environment secrets
+.env
+
+# PyCharm run configurations
+.run/
+
+# Other Python cache variants
+*.py[cod]
+
+# OS files
+.DS_Store
+Thumbs.db

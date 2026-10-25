@@ -1,0 +1,67 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}ExpiryBox{% endblock %} | ExpiryBox</title>
+    <link rel="icon" href="{% static 'img/logo.svg' %}" type="image/svg+xml">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="layout">
+
+    <!-- Sidebar on the left -->
+    <aside class="sidebar">
+        <a class="brand" href="{% url 'home' %}">
+            <img src="{% static 'img/logo.svg' %}" alt="" class="brand-logo">
+            <span>ExpiryBox</span>
+        </a>
+
+        {# The name of the current page, used to highlight its menu link #}
+        {% with page=request.resolver_match.url_name %}
+        <nav class="side-nav">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" {% if page == "dashboard" %}class="active"{% endif %}>Dashboard</a>
+                <a href="{% url 'item_list' %}" {% if "item_" in page %}class="active"{% endif %}>Items</a>
+                <a href="{% url 'category_list' %}" {% if "category_" in page %}class="active"{% endif %}>Categories</a>
+                <a href="{% url 'reminder_list' %}" {% if "reminder_" in page %}class="active"{% endif %}>Reminders</a>
+                <a href="{% url 'notification_list' %}" {% if "notification_" in page %}class="active"{% endif %}>Notifications</a>
+                <a href="{% url 'record_list' %}" {% if "record_" in page or page == "impact_summary" %}class="active"{% endif %}>Impact</a>
+                <a href="{% url 'account' %}" {% if "account" in page or "password" in page %}class="active"{% endif %}>Account</a>
+            {% else %}
+                <a href="{% url 'login' %}" {% if page == "login" %}class="active"{% endif %}>Log in</a>
+                <a href="{% url 'register' %}" {% if page == "register" %}class="active"{% endif %}>Register</a>
+            {% endif %}
+        </nav>
+        {% endwith %}
+
+        {% if user.is_authenticated %}
+            <div class="sidebar-user">
+                <span class="muted">Logged in as</span>
+                <strong>{{ user.first_name|default:user.username }}</strong>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="button button-light button-small">Log out</button>
+                </form>
+            </div>
+        {% endif %}
+    </aside>
+
+    <!-- Page content on the right -->
+    <div class="content">
+        <main>
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="message message-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+        </main>
+
+        <footer class="footer">ExpiryBox: track expiry dates, save more, waste less.</footer>
+    </div>
+
+</div>
+</body>
+</html>
