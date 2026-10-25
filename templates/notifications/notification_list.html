@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+{% block content %}
+<h1>Notifications</h1>
+
+{% if notifications %}
+    <ul class="notification-list">
+        {% for notification in notifications %}
+            <li class="card notification {% if not notification.is_read %}unread{% endif %}">
+                <div>
+                    <span class="label">{{ notification.get_notification_type_display }}</span>
+                    {% if not notification.is_read %}<span class="label label-soon">New</span>{% endif %}
+                    <p>{{ notification.message }}</p>
+                    <span class="muted">
+                        {{ notification.created_at|date:"d M Y, H:i" }}
+                        {% if notification.item %}
+                            &middot; <a href="{% url 'item_detail' notification.item.pk %}">View item</a>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="actions">
+                    {% if not notification.is_read %}
+                        <form method="post" action="{% url 'notification_mark_read' notification.pk %}" class="inline-form">
+                            {% csrf_token %}
+                            <button type="submit" class="button button-small button-light">Mark as read</button>
+                        </form>
+                    {% endif %}
+                    <form method="post" action="{% url 'notification_delete' notification.pk %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="button button-small button-danger">Delete</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="card">
+        <p>No notifications yet. They appear here when one of your
+           <a href="{% url 'reminder_list' %}">reminders</a> is due.</p>
+    </div>
+{% endif %}
+{% endblock %}
