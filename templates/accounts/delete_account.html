@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Delete account{% endblock %}
+{% block content %}
+<div class="card narrow danger-zone">
+    <h1>Delete my account</h1>
+    <p>Are you sure? This will permanently delete your account
+       (<strong>{{ user.username }}</strong>) and everything in it:
+       your items, reminders, notifications and impact records.
+       This cannot be undone.</p>
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit" class="button button-danger">Yes, delete my account</button>
+        <a href="{% url 'account' %}" class="button button-light">Cancel</a>
+    </form>
+</div>
+{% endblock %}

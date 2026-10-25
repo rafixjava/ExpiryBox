@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}My account{% endblock %}
+{% block content %}
+<div class="card narrow">
+    <h1>My account</h1>
+    <p class="muted">
+        Username: <strong>{{ user.username }}</strong><br>
+        Member since {{ user.date_joined|date:"d M Y" }}
+    </p>
+    <form method="post" class="form">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button type="submit" class="button">Save changes</button>
+    </form>
+    <p><a href="{% url 'change_password' %}">Change my password</a></p>
+</div>
+
+<div class="card narrow danger-zone">
+    <h2>Delete account</h2>
+    <p class="muted">This permanently deletes your account and all your items,
+       reminders, notifications and impact records.</p>
+    <a href="{% url 'delete_account' %}" class="button button-danger">Delete my account</a>
+</div>
+{% endblock %}
