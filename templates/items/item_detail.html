@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}{{ item.item_name }}{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>{{ item.item_name }} {% include "items/status_label.html" %}</h1>
+    <div class="actions">
+        <a href="{% url 'item_edit' item.pk %}" class="button button-light">Edit</a>
+        <a href="{% url 'item_delete' item.pk %}" class="button button-danger">Delete</a>
+    </div>
+</div>
+
+<div class="card detail">
+    {% if item.photo %}
+        <img src="{{ item.photo.url }}" alt="Photo of {{ item.item_name }}" class="detail-photo">
+    {% endif %}
+    <table class="detail-table">
+        <tr><th>Category</th><td>{{ item.category }}</td></tr>
+        <tr><th>Price</th><td>&#2547;{{ item.price|floatformat:2 }}</td></tr>
+        <tr><th>Description</th><td>{{ item.description|default:"-"|linebreaksbr }}</td></tr>
+        <tr><th>Provider</th><td>{{ item.provider|default:"-" }}</td></tr>
+        <tr><th>Purchase date</th><td>{{ item.purchase_date|date:"d M Y"|default:"-" }}</td></tr>
+        <tr>
+            <th>Expiry date</th>
+            <td>
+                {{ item.expiry_date|date:"d M Y" }}
+                {% if item.days_left >= 0 %}
+                    <span class="muted">({{ item.days_left }} day(s) left)</span>
+                {% endif %}
+            </td>
+        </tr>
+        <tr><th>Reference number</th><td>{{ item.reference_number|default:"-" }}</td></tr>
+        <tr><th>Added</th><td>{{ item.created_at|date:"d M Y, H:i" }}</td></tr>
+        <tr><th>Last updated</th><td>{{ item.updated_at|date:"d M Y, H:i" }}</td></tr>
+    </table>
+</div>
+
+<div class="grid-2">
+    <section class="card">
+        <div class="section-header">
+            <h2>Reminders</h2>
+            <a href="{% url 'reminder_add' %}?item={{ item.pk }}" class="button button-small">+ Add reminder</a>
+        </div>
+        {% if reminders %}
+            <ul class="simple-list">
+                {% for reminder in reminders %}
+                    <li>
+                        {{ reminder.reminder_date|date:"d M Y" }}, {{ reminder.get_reminder_type_display }}
+                        {% if reminder.is_sent %}<span class="label label-ok">Sent</span>{% else %}<span class="label">Waiting</span>{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="muted">No reminders for this item.</p>
+        {% endif %}
+    </section>
+
+    <section class="card">
+        <div class="section-header">
+            <h2>Outcome</h2>
+            {% if not impact_records %}
+                <a href="{% url 'record_add' %}?item={{ item.pk }}" class="button button-small">Record outcome</a>
+            {% endif %}
+        </div>
+        {% if impact_records %}
+            {% for record in impact_records %}
+                <p>
+                    {% if record.outcome == "SAVED" %}<span class="label label-saved">Saved</span>{% else %}<span class="label label-lost">Lost</span>{% endif %}
+                    &#2547;{{ record.amount_value|floatformat:2 }} on {{ record.resolved_date|date:"d M Y" }}
+                    (<a href="{% url 'record_edit' record.pk %}">edit</a>)
+                </p>
+            {% endfor %}
+        {% else %}
+            <p class="muted">No outcome recorded yet. Was this item saved or lost?</p>
+        {% endif %}
+    </section>
+</div>
+
+<p><a href="{% url 'item_list' %}">&larr; Back to my items</a></p>
+{% endblock %}

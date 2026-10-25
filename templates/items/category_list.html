@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Categories</h1>
+    <a href="{% url 'category_add' %}" class="button">+ Add category</a>
+</div>
+<p class="muted">Categories are shared by all ExpiryBox users. Predefined categories cannot be changed.</p>
+
+{% if categories %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>Name</th><th>Description</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <td>{{ category.category_name }}</td>
+                        <td>{{ category.description|default:"-" }}</td>
+                        <td class="row-actions">
+                            {% if category.is_predefined %}
+                                <span class="label">Predefined</span>
+                            {% else %}
+                                <a href="{% url 'category_edit' category.pk %}">Edit</a>
+                                <a href="{% url 'category_delete' category.pk %}" class="danger-link">Delete</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="card"><p>No categories yet.</p></div>
+{% endif %}
+{% endblock %}

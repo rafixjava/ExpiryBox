@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Hello, {{ user.first_name|default:user.username }}</h1>
+    <a href="{% url 'item_add' %}" class="button">+ Add item</a>
+</div>
+
+<div class="stats">
+    <div class="stat"><span class="stat-number">{{ total_items }}</span><span>Total items</span></div>
+    <div class="stat stat-expired"><span class="stat-number">{{ expired_count }}</span><span>Expired</span></div>
+    <div class="stat stat-soon"><span class="stat-number">{{ soon_count }}</span><span>Expiring soon</span></div>
+    <div class="stat stat-saved"><span class="stat-number">{{ saved_count }}</span><span>Saved</span></div>
+    <div class="stat stat-lost"><span class="stat-number">{{ lost_count }}</span><span>Lost</span></div>
+</div>
+
+<div class="grid-2">
+    <section class="card">
+        <h2>Expiring in the next 7 days</h2>
+        {% if soon_items %}
+            <ul class="simple-list">
+                {% for item in soon_items %}
+                    <li>
+                        <a href="{% url 'item_detail' item.pk %}">{{ item.item_name }}</a>
+                        <span class="muted">{{ item.expiry_date|date:"d M Y" }} ({{ item.days_left }} day(s) left)</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="muted">Nothing is expiring soon.</p>
+        {% endif %}
+    </section>
+
+    <section class="card">
+        <h2>Upcoming reminders</h2>
+        {% if upcoming_reminders %}
+            <ul class="simple-list">
+                {% for reminder in upcoming_reminders %}
+                    <li>
+                        {{ reminder.item.item_name }}
+                        <span class="muted">{{ reminder.reminder_date|date:"d M Y" }}, {{ reminder.get_reminder_type_display }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="muted">No upcoming reminders. <a href="{% url 'reminder_add' %}">Add one</a></p>
+        {% endif %}
+    </section>
+</div>
+
+<section class="card">
+    <h2>Recent notifications</h2>
+    {% if recent_notifications %}
+        <ul class="simple-list">
+            {% for notification in recent_notifications %}
+                <li {% if not notification.is_read %}class="unread"{% endif %}>
+                    {{ notification.message }}
+                    <span class="muted">{{ notification.created_at|date:"d M Y, H:i" }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <p><a href="{% url 'notification_list' %}">See all notifications</a></p>
+    {% else %}
+        <p class="muted">No notifications yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

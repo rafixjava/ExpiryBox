@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}My items{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>My items</h1>
+    <a href="{% url 'item_add' %}" class="button">+ Add item</a>
+</div>
+
+{% if items %}
+    <div class="item-grid">
+        {% for item in items %}
+            <a class="item-card" href="{% url 'item_detail' item.pk %}">
+                {% if item.photo %}
+                    <img src="{{ item.photo.url }}" alt="Photo of {{ item.item_name }}" class="item-photo">
+                {% else %}
+                    <div class="item-photo item-photo-empty">No photo</div>
+                {% endif %}
+                <div class="item-card-body">
+                    <strong>{{ item.item_name }}</strong>
+                    <span class="muted">{{ item.category }} &middot; &#2547;{{ item.price|floatformat:2 }}</span>
+                    <span class="muted">Expires {{ item.expiry_date|date:"d M Y" }}</span>
+                    {% include "items/status_label.html" %}
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="card">
+        <p>You have not added any items yet.</p>
+        <a href="{% url 'item_add' %}" class="button">Add your first item</a>
+    </div>
+{% endif %}
+{% endblock %}
