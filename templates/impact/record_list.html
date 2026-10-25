@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Impact records{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Impact records</h1>
+    <div class="actions">
+        <a href="{% url 'impact_summary' %}" class="button button-light">Yearly summary</a>
+        <a href="{% url 'record_add' %}" class="button">+ Record outcome</a>
+    </div>
+</div>
+
+{% if records %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr><th>Item</th><th>Outcome</th><th>Amount</th><th>Resolved</th><th>Notes</th><th></th></tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        <td><a href="{% url 'item_detail' record.item.pk %}">{{ record.item.item_name }}</a></td>
+                        <td>
+                            {% if record.outcome == "SAVED" %}
+                                <span class="label label-saved">Saved</span>
+                            {% else %}
+                                <span class="label label-lost">Lost</span>
+                            {% endif %}
+                        </td>
+                        <td>&#2547;{{ record.amount_value|floatformat:2 }}</td>
+                        <td>{{ record.resolved_date|date:"d M Y" }}</td>
+                        <td>{{ record.notes|default:"-"|truncatewords:12 }}</td>
+                        <td class="row-actions">
+                            <a href="{% url 'record_edit' record.pk %}">Edit</a>
+                            <a href="{% url 'record_delete' record.pk %}" class="danger-link">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="card"><p>No outcomes recorded yet. When an item is used or wasted, record it here.</p></div>
+{% endif %}
+{% endblock %}

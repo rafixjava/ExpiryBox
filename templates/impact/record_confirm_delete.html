@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Delete outcome{% endblock %}
+{% block content %}
+<div class="card narrow">
+    <h1>Delete outcome</h1>
+    <p>Delete the <strong>{{ record.get_outcome_display }}</strong> record for
+       <strong>{{ record.item.item_name }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="button button-danger">Yes, delete</button>
+        <a href="{% url 'record_list' %}" class="button button-light">Cancel</a>
+    </form>
+</div>
+{% endblock %}
