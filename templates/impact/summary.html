@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Yearly impact summary{% endblock %}
+{% block content %}
+<div class="page-header">
+    <h1>Yearly impact summary</h1>
+    <a href="{% url 'record_list' %}" class="button button-light">All records</a>
+</div>
+<p class="muted">Totals are added up from your impact records, grouped by the year they were resolved.</p>
+
+{% if rows %}
+    <div class="table-wrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Items saved</th>
+                    <th>Amount saved</th>
+                    <th>Items lost</th>
+                    <th>Amount lost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    <tr>
+                        <td><strong>{{ row.year }}</strong></td>
+                        <td>{{ row.saved_count }}</td>
+                        <td class="text-saved">&#2547;{{ row.saved_total|floatformat:2 }}</td>
+                        <td>{{ row.lost_count }}</td>
+                        <td class="text-lost">&#2547;{{ row.lost_total|floatformat:2 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="card"><p>No impact records yet, so there is nothing to summarise.</p></div>
+{% endif %}
+{% endblock %}
