@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Delete reminder{% endblock %}
+{% block content %}
+<div class="card narrow">
+    <h1>Delete reminder</h1>
+    <p>Delete the reminder for <strong>{{ reminder.item.item_name }}</strong>
+       on {{ reminder.reminder_date|date:"d M Y" }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="button button-danger">Yes, delete</button>
+        <a href="{% url 'reminder_list' %}" class="button button-light">Cancel</a>
+    </form>
+</div>
+{% endblock %}
